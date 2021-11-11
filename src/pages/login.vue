@@ -11,8 +11,8 @@ const password = ref("");
 
 const router = useRouter();
 
-const loggingIn = () => {
-    login(username.value, password.value);
+const loggingIn = async () => {
+    await login(username.value, password.value);
     if (isAuthenticated.value)
     {
         router.push("/");
@@ -34,7 +34,6 @@ const { ready, start } = useTimeout(5000, {controls: true});
 <template>
 <div class="flex flex-col  space-y-12 items-center justify-center  min-h-screen-nonav">
 
-Login status: {{isAuthenticated}}
 
 <div class="bg-pink-400 flex justify-center overflow-hidden items-center border-4 rounded-lg shadow-2xl ">
 <img class="h-64" src = "../assets/bglogin.png" alt = "Hello BG">
