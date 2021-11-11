@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import useAuth from "../composable/useAuth";
 import useError from "../composable/useError";
 
-const { isAuthenticated, login} = useAuth();
+const { isAuthenticated, login, signup} = useAuth();
 
 const username = ref("");
 const password = ref("");
@@ -13,14 +13,21 @@ const router = useRouter();
 
 const loggingIn = async () => {
     await login(username.value, password.value);
-    if (isAuthenticated.value)
-    {
-        router.push("/");
-    }
-    else {
-        setError("Invalid username or password");
-        start();
-    }
+  goToHome();
+};
+
+const signingUp = async () => {
+  await signup(username.value, password.value);
+  goToHome();
+};
+
+const goToHome = () => {
+  if (isAuthenticated.value) {
+    router.push("/");
+  } else {
+    setError("Invalid username or password");
+    start();
+  }
 };
 
 const { error, setError } = useError();
@@ -43,7 +50,13 @@ const { ready, start } = useTimeout(5000, {controls: true});
 
     <input type = "password"  class = "bg-gray-100 border-2 rounded-lg" placeholder = "Password" v-model = "password" />
 
-    <button type = "submit" @submit.prevent = "loggingIn" class = "py-2 bg-blue-400 font-semibold rounded-lg">Login</button>
+    <div class = "flex space-x-2">
+    <button type = "submit" @submit.prevent = "loggingIn" class = " w-3/4 py-2 bg-gray-400 font-semibold rounded-lg">Login</button>
+
+    <button @click = "signingUp" class = "w-3/4 py-2 bg-purple-400 font-semibold rounded-lg">Sign up</button>
+    </div>
+
+    
 </form>
 </div>
 
